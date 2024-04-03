@@ -1,0 +1,27 @@
+.spacing{
+  margin:0 10px;
+}
+
+.colour{
+  color: #487eb0;
+}
+
+.back{
+  background-color:#dff9fb;
+}
+
+.button-space{
+  margin-right: 30px;
+}
+
+.image{
+  display: block;
+  margin: 0 auto;
+  width: 55%;
+}
+
+.one-line{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
