@@ -1,6 +1,35 @@
-import { Link } from "react-router-dom";
+import axios from "axios";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const Signup = () => {
+  const navigate = useNavigate();
+
+  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const signup = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/v1/users/register",
+        {
+          name,
+          username,
+          password,
+        }
+      );
+      alert("Registation Successfully");
+
+      console.log(response);
+      navigate("/");
+
+      setName(""), setUsername(""), setPassword("");
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <>
       <br />
@@ -20,11 +49,15 @@ const Signup = () => {
                       type="text"
                       name="name"
                       id="name"
+                      onChange={(e) => {
+                        setName(e.target.value);
+                      }}
                       className="form-control input-item"
                       autoComplete="usernamme"
                       required
                     />
                   </div>
+                  <br />
                   <div className="form-group">
                     <label htmlFor="username" className="form-label">
                       Username
@@ -32,6 +65,9 @@ const Signup = () => {
                     <input
                       type="text"
                       id="username"
+                      onChange={(e) => {
+                        setUsername(e.target.value);
+                      }}
                       name="username"
                       className="form-control input-item"
                       autoComplete="given-name"
@@ -48,6 +84,9 @@ const Signup = () => {
                       type="password"
                       name="password"
                       id="password"
+                      onChange={(e) => {
+                        setPassword(e.target.value);
+                      }}
                       className="form-control input-item"
                       autoComplete="current-password"
                       required
@@ -58,14 +97,20 @@ const Signup = () => {
                 <br />
 
                 <div className="d-grid gap-2 col-8 mx-auto">
-                  <button className="btn btn-primary" type="submit">
+                  <button
+                    onClick={() => {
+                      signup();
+                    }}
+                    className="btn btn-primary"
+                    type="submit"
+                  >
                     Sign Up
                   </button>
                   <span className="text-center">OR</span>
                   <Link
                     className="btn btn-outline-dark"
                     type="button"
-                    to={"/login"}
+                    to={"/"}
                     style={{ marginBottom: 30 }}
                   >
                     Already have an Account

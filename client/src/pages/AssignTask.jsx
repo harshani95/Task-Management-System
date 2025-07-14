@@ -53,7 +53,7 @@ const AssignTask = () => {
                 Assign Task To Team member
               </h3>
               <div className="card-body">
-                <form>
+                <form onSubmit={saveTask}>
                   <div className="form-group">
                     <label htmlFor="taskName">Task Name </label>
                     <input
@@ -123,7 +123,6 @@ const AssignTask = () => {
 
                   <button
                     className="btn btn-warning button-space"
-                    onClick={() => saveTask()}
                     style={inlineStyles.buttonSpace}
                     type="button"
                   >
@@ -131,7 +130,7 @@ const AssignTask = () => {
                   </button>
                   <Link
                     className="btn btn-danger"
-                    type="button"
+                    type="submit"
                     to={"/dashboard"}
                   >
                     Cancel

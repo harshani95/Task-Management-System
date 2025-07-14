@@ -32,7 +32,7 @@ const Navbar = () => {
                     <a
                       className="nav-link active"
                       aria-current="page"
-                      href="/"
+                      href="/home"
                       style={spacing}
                     >
                       Home
@@ -46,11 +46,6 @@ const Navbar = () => {
                   <li className="nav-item">
                     <a className="nav-link " href="/assignTask" style={spacing}>
                       Task Assign
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a className="nav-link " href="/login" style={spacing}>
-                      Login
                     </a>
                   </li>
                 </ul>

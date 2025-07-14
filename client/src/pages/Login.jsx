@@ -1,6 +1,33 @@
-import { Link } from "react-router-dom";
+import axios from "axios";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
+
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const login = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/v1/users/login",
+        {
+          username,
+          password,
+        }
+      );
+      alert("Login Successfully");
+
+      console.log(response);
+      navigate("/home");
+
+      setUsername(""), setPassword("");
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <>
       <br />
@@ -19,6 +46,9 @@ const Login = () => {
                     <input
                       type="text"
                       className="form-control input-item"
+                      onChange={(e) => {
+                        setUsername(e.target.value);
+                      }}
                       id="username"
                       name="username"
                       autoComplete="username"
@@ -34,6 +64,9 @@ const Login = () => {
                     <input
                       type="password"
                       id="password"
+                      onChange={(e) => {
+                        setPassword(e.target.value);
+                      }}
                       className="form-control input-item"
                       name="password"
                       autoComplete="current-password"
@@ -44,7 +77,13 @@ const Login = () => {
                 <br />
 
                 <div className="d-grid gap-2 col-8 mx-auto">
-                  <button className="btn btn-primary" type="button">
+                  <button
+                    onClick={() => {
+                      login();
+                    }}
+                    className="btn btn-primary"
+                    type="button"
+                  >
                     Login
                   </button>
                   <span className="text-center">OR</span>
