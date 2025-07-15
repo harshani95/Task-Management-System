@@ -18,7 +18,7 @@ Key features include:
 
 ### Prerequisites
 - Java Development Kit (JDK) 11 or later
-- Node.js and npm (Node Package Manager)
+- Node.js 18 or later and npm (Node Package Manager)
 - MySQL Server
 - Maven
 
