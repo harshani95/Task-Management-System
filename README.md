@@ -1,4 +1,15 @@
 # Task Management System
+
+## 📝 Project Overview
+
+This is a simple **Task Management System** built with **React (frontend)** and **Spring Boot (backend)**.  
+Key features include:
+
+- 🗂️ Create, update, delete tasks.
+- 👥 Assign tasks to team members.
+- 📅 Set start & end dates.
+- 🔒 Secure user login with JWT token.
+  
 ### Technologies and Tools
 - React JS
 - bootstrap
@@ -9,20 +20,25 @@
 - Java Development Kit (JDK) 11 or later
 - Node.js and npm (Node Package Manager)
 - MySQL Server
+- Maven
 
 ### Installation and Setup
-## Backend
-1. Clone the repository
-   `git clone https://github.com/harsani95/Task-Management-System.git`
-2. Navigate to the backend directory.(taskMange)
-3. Configure MySQL database settings in application.properties file located in src/main/resources.
-   ` spring.datasource.url=jdbc:mysql://localhost:3306/db_name
-   spring.datasource.username=db_username
-   spring.datasource.password=db_password `
-5. Run the Spring Boot application.
-6. The backend server will start at `http://localhost:8080`
+### ✅ 1️⃣ Clone the repository
+ Clone the repository
+  - `git clone https://github.com/harsani95/Task-Management-System.git`
+  - `cd Task-Management-System`
 
-## Frontend
+### ✅ 2️⃣ Backend Setup — Spring Boot
+ 1. Navigate to the backend directory.(taskMange)
+
+ 2. Configure MySQL database settings in application.properties file located in src/main/resources.
+   - `spring.datasource.url=jdbc:mysql://localhost:3306/db_name`
+   - `spring.datasource.username=db_username`
+   - `spring.datasource.password=db_password `
+ 3. Run the Spring Boot application.
+ 4. The backend server will start at `http://localhost:8080`
+
+### ✅ 3️⃣ Frontend Setup — React
 1. Navigate to the frontend directory (client)
 2. Install dependencies.`npm install`
 3. Start the Vite development server.`npm run dev`
