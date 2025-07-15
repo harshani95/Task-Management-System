@@ -6,15 +6,23 @@ const UpdateTask = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [updateStatus, setUpdateStatus] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const updateTask = async (id) => {
+    if (!updateStatus) {
+      setErrorMessage("required before updating.");
+      return;
+    }
+
+    setErrorMessage("");
     try {
       await axios.put(`http://localhost:8080/api/v1/tasks/update/${id}`, {
         status: updateStatus,
       });
       navigate("/dashboard");
-    } catch (e) {
-      console.log(e);
+    } catch (err) {
+      console.error(err);
+      setErrorMessage("Something went wrong while update the task.");
     }
   };
 
@@ -55,9 +63,16 @@ const UpdateTask = () => {
                       type="text"
                       onChange={(e) => setUpdateStatus(e.target.value)}
                       value={updateStatus}
+                      required
                     />
                   </div>
                   <br />
+
+                  {errorMessage && (
+                    <div className="alert alert-danger" role="alert">
+                      {errorMessage}
+                    </div>
+                  )}
 
                   <button
                     className="btn btn-success"

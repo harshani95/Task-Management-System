@@ -12,25 +12,39 @@ const AssignTask = () => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [status, setStatus] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const saveTask = async () => {
-    const response = await axios.post(
-      "http://localhost:8080/api/v1/tasks/save",
-      {
-        name,
-        employee,
-        startDate,
-        endDate,
-        status,
-      }
-    );
-    console.log(response);
+  const saveTask = async (e) => {
+    e.preventDefault();
 
-    setName("");
-    setEmployee("");
-    setStartDate(""), setEndDate(""), setStatus("");
+    if (!name || !employee || !status || !startDate || !endDate) {
+      setErrorMessage("Please fill in all fields before saving.");
+      return;
+    }
 
-    navigate("/dashboard");
+    setErrorMessage("");
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/v1/tasks/save",
+        {
+          name,
+          employee,
+          startDate,
+          endDate,
+          status,
+        }
+      );
+      console.log(response);
+
+      setName("");
+      setEmployee("");
+      setStartDate(""), setEndDate(""), setStatus("");
+
+      navigate("/dashboard");
+    } catch (err) {
+      console.error(err);
+      setErrorMessage("Something went wrong while saving the task.");
+    }
   };
 
   const inlineStyles = {
@@ -121,10 +135,16 @@ const AssignTask = () => {
                   </div>
                   <br />
 
+                  {errorMessage && (
+                    <div className="alert alert-danger" role="alert">
+                      {errorMessage}
+                    </div>
+                  )}
+
                   <button
                     className="btn btn-warning button-space"
                     style={inlineStyles.buttonSpace}
-                    type="button"
+                    type="submit"
                   >
                     Save Task{" "}
                   </button>

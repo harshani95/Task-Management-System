@@ -9,7 +9,8 @@ const Signup = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const signup = async () => {
+  const signup = async (e) => {
+    e.preventDefault();
     try {
       const response = await axios.post(
         "http://localhost:8080/api/v1/users/register",
@@ -19,10 +20,10 @@ const Signup = () => {
           password,
         }
       );
+      console.log(response);
       alert("Registation Successfully");
 
-      console.log(response);
-      navigate("/");
+      navigate("/home");
 
       setName(""), setUsername(""), setPassword("");
     } catch (e) {
@@ -34,7 +35,7 @@ const Signup = () => {
     <>
       <br />
       <div>
-        <form>
+        <form onSubmit={signup}>
           <div className="container">
             <div className="row">
               <div className="card col-md-5 offset-md-3">
@@ -97,13 +98,7 @@ const Signup = () => {
                 <br />
 
                 <div className="d-grid gap-2 col-8 mx-auto">
-                  <button
-                    onClick={() => {
-                      signup();
-                    }}
-                    className="btn btn-primary"
-                    type="submit"
-                  >
+                  <button className="btn btn-primary" type="submit">
                     Sign Up
                   </button>
                   <span className="text-center">OR</span>

@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Navbar = () => {
   const spacing = {
     margin: "0 10px",
@@ -12,7 +14,7 @@ const Navbar = () => {
         >
           <nav className="navbar navbar-expand-lg bg-body-tertiary">
             <div className="container-fluid">
-              <a className="navbar-brand spacing" href="#">
+              <a className="navbar-brand spacing" to="#">
                 Task Management System
               </a>
               <button
@@ -29,24 +31,33 @@ const Navbar = () => {
               <div className="collapse navbar-collapse" id="navbarNav">
                 <ul className="navbar-nav">
                   <li className="nav-item">
-                    <a
+                    <Link
                       className="nav-link active"
                       aria-current="page"
                       href="/home"
                       style={spacing}
                     >
                       Home
-                    </a>
+                    </Link>
                   </li>
                   <li className="nav-item">
-                    <a className="nav-link " href="/dashboard" style={spacing}>
+                    <Link className="nav-link " to="/dashboard" style={spacing}>
                       Dashboard
-                    </a>
+                    </Link>
                   </li>
                   <li className="nav-item">
-                    <a className="nav-link " href="/assignTask" style={spacing}>
+                    <Link
+                      className="nav-link "
+                      to="/assignTask"
+                      style={spacing}
+                    >
                       Task Assign
-                    </a>
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link " to="/" style={spacing}>
+                      LogOut
+                    </Link>
                   </li>
                 </ul>
               </div>
