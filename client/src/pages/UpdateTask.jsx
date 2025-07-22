@@ -9,6 +9,7 @@ const UpdateTask = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const updateTask = async (id) => {
+    const token = localStorage.getItem("token");
     if (!updateStatus) {
       setErrorMessage("required before updating.");
       return;
@@ -16,9 +17,17 @@ const UpdateTask = () => {
 
     setErrorMessage("");
     try {
-      await axios.put(`http://localhost:8080/api/v1/tasks/update/${id}`, {
-        status: updateStatus,
-      });
+      await axios.put(
+        `http://localhost:8080/api/v1/tasks/update/${id}`,
+        {
+          status: updateStatus,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       navigate("/dashboard");
     } catch (err) {
       console.error(err);
@@ -27,9 +36,15 @@ const UpdateTask = () => {
   };
 
   const loadTask = async (id) => {
+    const token = localStorage.getItem("token");
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/v1/tasks/get-by-id/${id}`
+        `http://localhost:8080/api/v1/tasks/get-by-id/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       const taskData = response.data.data;
       console.log(response.data.data);
@@ -41,8 +56,8 @@ const UpdateTask = () => {
   };
 
   useEffect(() => {
-    loadTask();
-  }, []);
+    loadTask(id);
+  }, [id]);
 
   return (
     <>

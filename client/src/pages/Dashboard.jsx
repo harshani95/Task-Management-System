@@ -13,26 +13,57 @@ const Dashboard = () => {
   }, [searchText]);
 
   const getAllTask = async () => {
-    const response = await axios.get(
-      "http://localhost:8080/api/v1/tasks/get-all-tasks"
-    );
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.get(
+        "http://localhost:8080/api/v1/tasks/get-all-tasks",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-    console.log(response.data.data);
-    setTasks(response.data.data);
+      console.log(response.data.data);
+      setTasks(response.data.data);
+    } catch (error) {
+      console.error("Failed to fetch tasks:", error);
+      alert("Unauthorized! Please login.");
+    }
   };
 
   const deleteTask = async (id) => {
-    await axios.delete("http://localhost:8080/api/v1/tasks/delete/" + id);
-    getAllTask();
+    const token = localStorage.getItem("token");
+    try {
+      await axios.delete("http://localhost:8080/api/v1/tasks/delete/" + id, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      getAllTask();
+    } catch (error) {
+      console.error("Failed to delete task:", error);
+      alert("Failed to delete task. Please try again.");
+    }
   };
 
   const searchByEmployee = async (e) => {
+    const token = localStorage.getItem("token");
     e.preventDefault();
-    const response = await axios.get(
-      `http://localhost:8080/api/v1/tasks/get-by-employee/${searchEmployee}`
-    );
-    setTasks(response.data.data);
-    console.log(response.data.data);
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/api/v1/tasks/get-by-employee/${searchEmployee}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setTasks(response.data.data);
+      console.log(response.data.data);
+    } catch (error) {
+      console.error("Error searching by employee:", error);
+    }
   };
 
   return (
@@ -67,7 +98,7 @@ const Dashboard = () => {
                 <tr className="table-primary">
                   <th>Id</th>
                   <th>Task Name</th>
-                  <th>Assigned To Employee Name</th>
+                  <th>Team Member</th>
                   <th>Task Assign Date</th>
                   <th>Task Deadline</th>
                   <th>Status</th>

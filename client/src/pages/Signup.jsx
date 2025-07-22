@@ -23,7 +23,7 @@ const Signup = () => {
       console.log(response);
       alert("Registation Successfully");
 
-      navigate("/home");
+      navigate("/");
 
       setName(""), setUsername(""), setPassword("");
     } catch (e) {

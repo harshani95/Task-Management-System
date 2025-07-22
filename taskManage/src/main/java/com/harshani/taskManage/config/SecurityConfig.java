@@ -11,9 +11,11 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @RequiredArgsConstructor
@@ -28,13 +30,15 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
                                 .requestMatchers("/api/v1/users/login", "/api/v1/users/register").permitAll()
-                                .requestMatchers("/api/v1/tasks/get-all-tasks","/api/v1/tasks/save",
-                                        "/api/v1/tasks/update/{id}", "/api/v1/tasks/get-by-id/{id}",
-                                        "/api/v1/tasks/get-by-status/{status}", "/api/v1/tasks/get-by-employee/{employee}",
-                                        "/api/v1/tasks/delete/{id}").permitAll()
+//                                .requestMatchers("/api/v1/tasks/get-all-tasks","/api/v1/tasks/save",
+//                                        "/api/v1/tasks/update/{id}", "/api/v1/tasks/get-by-id/{id}",
+//                                        "/api/v1/tasks/get-by-employee/{employee}",
+//                                        "/api/v1/tasks/delete/{id}").permitAll()
                                 .requestMatchers("/api/v1/tasks/**").authenticated()
 
                 )
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(requestFilter, UsernamePasswordAuthenticationFilter.class)
                 .httpBasic(Customizer.withDefaults()).build();
     }
 

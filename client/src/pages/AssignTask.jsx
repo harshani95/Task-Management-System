@@ -15,6 +15,7 @@ const AssignTask = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const saveTask = async (e) => {
+    const token = localStorage.getItem("token");
     e.preventDefault();
 
     if (!name || !employee || !status || !startDate || !endDate) {
@@ -32,6 +33,11 @@ const AssignTask = () => {
           startDate,
           endDate,
           status,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       console.log(response);

@@ -17,14 +17,16 @@ const Login = () => {
           password,
         }
       );
+      localStorage.setItem("token", response.data.data);
       alert("Login Successfully");
 
-      console.log(response);
+      console.log(response.data);
       navigate("/home");
 
       setUsername(""), setPassword("");
     } catch (e) {
-      console.log(e);
+      console.error("Login failed:", e);
+      alert("Login failed!");
     }
   };
 
