@@ -4,4 +4,5 @@ import com.harshani.taskManage.dto.request.RequestUserDto;
 
 public interface UserService {
      String signup(RequestUserDto userDto);
+     String login(RequestUserDto userDto);
 }

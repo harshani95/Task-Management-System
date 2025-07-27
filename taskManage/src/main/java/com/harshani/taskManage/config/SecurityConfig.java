@@ -1,10 +1,12 @@
 package com.harshani.taskManage.config;
 
-import com.harshani.taskManage.filter.JwtRequestFilter;
+import com.harshani.taskManage.service.impl.ApplicationUserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -22,21 +24,27 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
-    private final JwtRequestFilter requestFilter;
+    private final JwtAuthFilter authFilter;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.csrf(AbstractHttpConfigurer::disable)
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
+        httpSecurity.csrf(AbstractHttpConfigurer::disable)
+                .cors(Customizer.withDefaults())
+                .authorizeHttpRequests(request-> request.requestMatchers( "/api/v1/auth/**","/public/**").permitAll()
+                        .requestMatchers("/api/v1/admin/**").hasAnyAuthority("ADMIN")
+                        .requestMatchers("/api/v1/user/**").hasAnyAuthority("USER")
+                        .requestMatchers("/api/v1/admin-user/**").hasAnyAuthority("ADMIN", "USER")
 
-                .authorizeHttpRequests(auth -> auth
-                                .requestMatchers("/api/v1/users/login", "/api/v1/users/register").permitAll()
-                                .requestMatchers("/api/v1/tasks/**").authenticated()
 
-                )
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(requestFilter, UsernamePasswordAuthenticationFilter.class)
-                .httpBasic(Customizer.withDefaults()).build();
+                        .anyRequest().authenticated())
+                .sessionManagement(manager->manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(
+                        authFilter, UsernamePasswordAuthenticationFilter.class
+                );
+        return httpSecurity.build();
     }
+
+
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
