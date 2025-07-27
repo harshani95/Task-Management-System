@@ -30,10 +30,6 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
                                 .requestMatchers("/api/v1/users/login", "/api/v1/users/register").permitAll()
-//                                .requestMatchers("/api/v1/tasks/get-all-tasks","/api/v1/tasks/save",
-//                                        "/api/v1/tasks/update/{id}", "/api/v1/tasks/get-by-id/{id}",
-//                                        "/api/v1/tasks/get-by-employee/{employee}",
-//                                        "/api/v1/tasks/delete/{id}").permitAll()
                                 .requestMatchers("/api/v1/tasks/**").authenticated()
 
                 )
