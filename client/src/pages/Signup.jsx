@@ -5,27 +5,38 @@ import { Link, useNavigate } from "react-router-dom";
 const Signup = () => {
   const navigate = useNavigate();
 
-  const [name, setName] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+    role: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
 
   const signup = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/v1/users/register",
-        {
-          name,
-          username,
-          password,
-        }
+        "http://localhost:8080/api/v1/auth/signup",
+        formData
       );
       console.log(response);
       alert("Registation Successfully");
 
       navigate("/");
 
-      setName(""), setUsername(""), setPassword("");
+      setFormData({
+        username: "",
+        email: "",
+        password: "",
+        role: "",
+      });
     } catch (e) {
       console.log(e);
     }
@@ -43,59 +54,64 @@ const Signup = () => {
                 <h2 className="text-center">Sign Up</h2>
                 <div className="card-body content">
                   <div className="form-group">
-                    <label htmlFor="name" className="form-label">
-                      Full Name
-                    </label>
-                    <input
-                      type="text"
-                      name="name"
-                      id="name"
-                      onChange={(e) => {
-                        setName(e.target.value);
-                      }}
-                      className="form-control input-item"
-                      autoComplete="usernamme"
-                      required
-                    />
-                  </div>
-                  <br />
-                  <div className="form-group">
-                    <label htmlFor="username" className="form-label">
-                      Username
-                    </label>
                     <input
                       type="text"
                       id="username"
-                      onChange={(e) => {
-                        setUsername(e.target.value);
-                      }}
+                      value={formData.username}
+                      onChange={handleChange}
                       name="username"
+                      placeholder="Username"
                       className="form-control input-item"
                       autoComplete="given-name"
                       required
                     />
                   </div>
                   <br />
+                  <div className="form-group">
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      placeholder="Email"
+                      id="email"
+                      onChange={handleChange}
+                      className="form-control input-item"
+                      autoComplete="email"
+                      required
+                    />
+                  </div>
+                  <br />
 
                   <div className="form-group">
-                    <label htmlFor="password" className="form-label">
-                      Password
-                    </label>
                     <input
                       type="password"
                       name="password"
+                      value={formData.password}
+                      placeholder="Password"
                       id="password"
-                      onChange={(e) => {
-                        setPassword(e.target.value);
-                      }}
+                      onChange={handleChange}
                       className="form-control input-item"
                       autoComplete="current-password"
                       required
                     />
                   </div>
                   <br />
+
+                  <div className="form-group">
+                    <input
+                      type="text"
+                      name="role"
+                      value={formData.role}
+                      placeholder="Role (User, Admin)"
+                      id="role"
+                      onChange={handleChange}
+                      className="form-control input-item"
+                      autoComplete="role"
+                      required
+                    />
+                  </div>
+                  <br />
                 </div>
-                <br />
 
                 <div className="d-grid gap-2 col-8 mx-auto">
                   <button className="btn btn-primary" type="submit">

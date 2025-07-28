@@ -16,7 +16,7 @@ const Dashboard = () => {
     const token = localStorage.getItem("token");
     try {
       const response = await axios.get(
-        "http://localhost:8080/api/v1/tasks/get-all-tasks",
+        "http://localhost:8080/api/v1/admin-user/get-all-tasks",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -35,7 +35,7 @@ const Dashboard = () => {
   const deleteTask = async (id) => {
     const token = localStorage.getItem("token");
     try {
-      await axios.delete("http://localhost:8080/api/v1/tasks/delete/" + id, {
+      await axios.delete("http://localhost:8080/api/v1/admin/delete/" + id, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -52,7 +52,7 @@ const Dashboard = () => {
     e.preventDefault();
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/v1/tasks/get-by-employee/${searchEmployee}`,
+        `http://localhost:8080/api/v1/admin/get-by-employee/${searchEmployee}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

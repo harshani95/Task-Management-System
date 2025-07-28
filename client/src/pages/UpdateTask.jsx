@@ -18,7 +18,7 @@ const UpdateTask = () => {
     setErrorMessage("");
     try {
       await axios.put(
-        `http://localhost:8080/api/v1/tasks/update/${id}`,
+        `http://localhost:8080/api/v1/admin/update/${id}`,
         {
           status: updateStatus,
         },
@@ -39,7 +39,7 @@ const UpdateTask = () => {
     const token = localStorage.getItem("token");
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/v1/tasks/get-by-id/${id}`,
+        `http://localhost:8080/api/v1/admin/get-by-id/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

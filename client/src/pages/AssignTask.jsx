@@ -26,7 +26,7 @@ const AssignTask = () => {
     setErrorMessage("");
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/v1/tasks/save",
+        "http://localhost:8080/api/v1/admin/save",
         {
           name,
           employee,
