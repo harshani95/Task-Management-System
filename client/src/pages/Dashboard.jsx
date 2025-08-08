@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance";
 import { jwtDecode } from "jwt-decode";
 
 const Dashboard = () => {
@@ -20,16 +20,8 @@ const Dashboard = () => {
   }, [searchText]);
 
   const getAllTask = async () => {
-    const token = localStorage.getItem("token");
     try {
-      const response = await axios.get(
-        "http://localhost:8080/api/v1/admin-user/get-all-tasks",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axiosInstance.get("/admin-user/get-all-tasks");
 
       console.log(response.data.data);
       setTasks(response.data.data);
@@ -40,13 +32,8 @@ const Dashboard = () => {
   };
 
   const deleteTask = async (id) => {
-    const token = localStorage.getItem("token");
     try {
-      await axios.delete("http://localhost:8080/api/v1/admin/delete/" + id, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await axiosInstance.delete("/admin/delete/" + id);
       getAllTask();
     } catch (error) {
       console.error("Failed to delete task:", error);
@@ -55,17 +42,10 @@ const Dashboard = () => {
   };
 
   const searchByEmployee = async (e) => {
-    const token = localStorage.getItem("token");
-
     e.preventDefault();
     try {
-      const response = await axios.get(
-        `http://localhost:8080/api/v1/admin/get-by-employee/${searchEmployee}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+      const response = await axiosInstance.get(
+        `/admin/get-by-employee/${searchEmployee}`
       );
       setTasks(response.data.data);
       console.log(response.data.data);

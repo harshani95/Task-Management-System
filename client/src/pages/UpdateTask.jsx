@@ -1,4 +1,4 @@
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
@@ -9,7 +9,6 @@ const UpdateTask = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const updateTask = async (id) => {
-    const token = localStorage.getItem("token");
     if (!updateStatus) {
       setErrorMessage("required before updating.");
       return;
@@ -17,17 +16,9 @@ const UpdateTask = () => {
 
     setErrorMessage("");
     try {
-      await axios.put(
-        `http://localhost:8080/api/v1/admin/update/${id}`,
-        {
-          status: updateStatus,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      await axiosInstance.put(`/admin/update/${id}`, {
+        status: updateStatus,
+      });
       navigate("/dashboard");
     } catch (err) {
       console.error(err);
@@ -36,16 +27,8 @@ const UpdateTask = () => {
   };
 
   const loadTask = async (id) => {
-    const token = localStorage.getItem("token");
     try {
-      const response = await axios.get(
-        `http://localhost:8080/api/v1/admin/get-by-id/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axiosInstance.get(`/admin/get-by-id/${id}`);
       const taskData = response.data.data;
       console.log(response.data.data);
 

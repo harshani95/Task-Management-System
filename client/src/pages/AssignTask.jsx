@@ -1,4 +1,4 @@
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance";
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -15,7 +15,7 @@ const AssignTask = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const saveTask = async (e) => {
-    const token = localStorage.getItem("token");
+   
     e.preventDefault();
 
     if (!name || !employee || !status || !startDate || !endDate) {
@@ -25,8 +25,8 @@ const AssignTask = () => {
 
     setErrorMessage("");
     try {
-      const response = await axios.post(
-        "http://localhost:8080/api/v1/admin/save",
+      const response = await axiosInstance.post(
+        "/admin/save",
         {
           name,
           employee,
@@ -34,11 +34,7 @@ const AssignTask = () => {
           endDate,
           status,
         },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        
       );
       console.log(response);
 

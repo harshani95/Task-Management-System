@@ -1,4 +1,4 @@
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -19,10 +19,7 @@ const Login = () => {
 
   const login = async () => {
     try {
-      const response = await axios.post(
-        "http://localhost:8080/api/v1/auth/login",
-        formData
-      );
+      const response = await axiosInstance.post("/auth/login", formData);
       localStorage.setItem("token", response.data.data);
       alert("Login Successfully");
 

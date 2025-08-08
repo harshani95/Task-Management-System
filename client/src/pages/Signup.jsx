@@ -1,6 +1,6 @@
-import axios from "axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import axiosInstance from "../../api/axiosInstance";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -22,10 +22,7 @@ const Signup = () => {
   const signup = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        "http://localhost:8080/api/v1/auth/signup",
-        formData
-      );
+      const response = await axiosInstance.post("/auth/signup", formData);
       console.log(response);
       alert("Registation Successfully");
 
