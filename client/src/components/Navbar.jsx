@@ -1,9 +1,25 @@
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { jwtDecode } from "jwt-decode";
 
 const Navbar = () => {
   const spacing = {
     margin: "0 10px",
   };
+
+  const [userRole, setUserRole] = useState("");
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        setUserRole(decoded.role[0]); // example: "ADMIN" or "USER"
+      } catch (error) {
+        console.error("Failed to decode token", error);
+      }
+    }
+  }, []);
 
   return (
     <>
@@ -45,17 +61,27 @@ const Navbar = () => {
                       Dashboard
                     </Link>
                   </li>
+                  {userRole === "ADMIN" && (
+                    <li className="nav-item">
+                      <Link
+                        className="nav-link"
+                        to="/assignTask"
+                        style={spacing}
+                      >
+                        Task Assign
+                      </Link>
+                    </li>
+                  )}
                   <li className="nav-item">
                     <Link
                       className="nav-link "
-                      to="/assignTask"
+                      to="/"
                       style={spacing}
+                      onClick={() => {
+                        localStorage.removeItem("token");
+                        localStorage.removeItem("userRole");
+                      }}
                     >
-                      Task Assign
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link className="nav-link " to="/" style={spacing}>
                       LogOut
                     </Link>
                   </li>

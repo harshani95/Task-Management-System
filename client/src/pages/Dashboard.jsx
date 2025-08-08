@@ -2,13 +2,20 @@ import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 const Dashboard = () => {
   const [tasks, setTasks] = useState([]);
   const [searchText] = useState("");
   const [searchEmployee, setSearchEmployee] = useState("");
+  const [userRole, setUserRole] = useState("");
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      setUserRole(decodedToken.role[0]);
+    }
     getAllTask();
   }, [searchText]);
 
@@ -49,6 +56,7 @@ const Dashboard = () => {
 
   const searchByEmployee = async (e) => {
     const token = localStorage.getItem("token");
+
     e.preventDefault();
     try {
       const response = await axios.get(
@@ -120,6 +128,10 @@ const Dashboard = () => {
                       <Link
                         to={`/updateStatus/${task.id}`}
                         className="btn btn-success btn-sm"
+                        style={{
+                          pointerEvents: userRole !== "ADMIN" ? "none" : "auto",
+                          opacity: userRole !== "ADMIN" ? 0.5 : 1,
+                        }}
                       >
                         Update
                       </Link>
@@ -128,10 +140,14 @@ const Dashboard = () => {
                       <button
                         className="btn btn-danger btn-sm"
                         onClick={() => {
-                          if (confirm("are you sure?")) {
+                          if (
+                            userRole === "ADMIN" &&
+                            confirm("are you sure?")
+                          ) {
                             deleteTask(task.id);
                           }
                         }}
+                        disabled={userRole !== "ADMIN"}
                       >
                         Delete
                       </button>
